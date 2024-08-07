@@ -1,0 +1,7 @@
+/* Add this to your global CSS file or a CSS module */
+.calendar .p-calendar {
+  width: 100% !important;
+  height: 100% !important;
+  margin-left: 0.5rem !important;
+  background-color: #176B87 !important;
+}

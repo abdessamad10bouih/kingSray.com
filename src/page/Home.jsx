@@ -1,0 +1,55 @@
+import React, { useState, useRef } from 'react'
+import Navbar from '../components/navBar';
+import heroVideo from '../assets/hero-vid.mp4'
+import Button from '../components/button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPauseCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import Search from '../components/searchBar';
+
+
+
+const Home = () => {
+  const [play, setPlay] = useState(faPlayCircle);
+  const [vidplaying, setVideoPlaying] = useState(true);
+  const videoRef = useRef(null);
+
+  const handlingPause = () => {
+    if (play === faPlayCircle && vidplaying) {
+      videoRef.current.pause();
+      setPlay(faPauseCircle)
+
+    } else {
+      videoRef.current.play();
+      setPlay(faPlayCircle)
+    }
+    setVideoPlaying(!vidplaying)
+  }
+
+  return (
+    <>
+      <header className='w-full h-screen flex flex-col items-center justify-center'>
+        <Navbar />
+        <section className='w-full flex h-full items-center justify-center relative'>
+          <div className='w-full relative flex-col p-4 flex justify-center items-center h-full md:w-[80%] md:flex md:justify-center md:items-center md:h-[69vh]'>
+            <video src={`./${heroVideo}`} autoPlay ref={videoRef} loop muted className='w-full h-full object-cover md:rounded-2xl absolute'></video>
+            <div className='w-full md:p-10 h-full flex flex-col justify-center items-center md:items-start z-20'>
+              <h1 className='z-20 text-4xl text-center font-poppins mb-2 font-bold text-white'>Welcome to Your Dream Stay</h1>
+              <p className='z-20 text-center text-white text-sm md:w-[40%] md:text-left'>Discover luxury and comfort at its finest. Whether you are looking for a weekend getaway, a family vacation, or a business trip, our hotel offers unparalleled service, elegant rooms, and top-notch amenities to make your stay unforgettable.</p>
+              <div className='z-20 w-full h-32 flex items-center justify-center gap-5 md:w-[30%]'>
+                <Button className={`bg-secondary`}>Book Now</Button>
+                <Button className={`bg-[rgba(255,255,255,0.2)] border-2 border-black`}>Explore Rooms</Button>
+              </div>
+              <div className='hidden md:absolute md:block text-8xl right-64 text-primary cursor-pointer z-10'>
+                <FontAwesomeIcon onClick={handlingPause} icon={play}>{vidplaying ? 'Pause' : 'Play'}</FontAwesomeIcon>
+              </div>
+            </div>
+          </div>
+          <div className='absolute md:w-[80%] md:h-[69vh] md:rounded-2xl w-full h-full bg-gradient-to-r from-primary to-[rgba(255,255,255,0.2)]'></div>
+        </section>
+      </header>
+      <Search />
+    </>
+  )
+}
+
+export default Home
