@@ -3,8 +3,11 @@ import Navbar from '../components/navBar';
 import heroVideo from '../assets/hero-vid.mp4'
 import Button from '../components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPauseCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faPauseCircle, faPlayCircle, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 import Search from '../components/searchBar';
+import img1 from '../assets/room.jpg'
+import img2 from '../assets/room1.jpg'
+import img3 from '../assets/room2.jpg'
 
 
 
@@ -48,6 +51,21 @@ const Home = () => {
         </section>
       </header>
       <Search />
+      <section className='w-full md:h-[50vh] h-screen flex flex-col justify-center md:items-center p-3'>
+        <h1 className='text-primary font-poppins font-medium md:w-[80%]'>About Our Service <FontAwesomeIcon className='text-primary' icon={faArrowRight} /> </h1>
+        <div className='w-full md:w-4/5 h-full items-center pt-4 flex flex-col md:flex-row'>
+          <div className='w-4/5 md:w-3/5 h-60 gap-4 bg-primary rounded-2xl items-start flex flex-col p-5'>
+            <FontAwesomeIcon className='text-6xl text-secondary' icon={faQuoteRight} />
+            <p className='text-xl font-poppins text-secondary'>"The Best Hotel In Morocco.. No debate"</p>
+            <h1 className='text-3xl text-white font-semibold font-poppins' >Thomas Edison</h1>
+          </div>
+          <div className='w-full h-[80%] flex md:flex-row gap-2 justify-center items-center flex-col mt-3'>
+            <img src={`./${img1}`} className='w-[60%] md:w-[35%] rounded-2xl' alt="" />
+            <img src={`./${img2}`} className='w-[60%] md:w-[35%] rounded-2xl' alt="" />
+            <img src={`./${img3}`} className='w-[60%] md:w-[35%] rounded-2xl' alt="" />
+          </div>
+        </div>
+      </section>
     </>
   )
 }
