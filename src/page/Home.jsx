@@ -1,19 +1,21 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Navbar from '../components/navBar';
 import heroVideo from '../assets/hero-vid.mp4'
 import Button from '../components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faPauseCircle, faPlayCircle, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faExpand, faPauseCircle, faPlayCircle, faQuoteRight, faUser, faWifi, faWind } from '@fortawesome/free-solid-svg-icons';
 import Search from '../components/searchBar';
-import img1 from '../assets/room.jpg'
-import img2 from '../assets/room1.jpg'
-import img3 from '../assets/room2.jpg'
-
+import img1 from '../assets/room.jpg';
+import img2 from '../assets/room1.jpg';
+import img3 from '../assets/room2.jpg';
+import Loading from '../components/loading ';
 
 
 const Home = () => {
   const [play, setPlay] = useState(faPlayCircle);
   const [vidplaying, setVideoPlaying] = useState(true);
+  const [rooms, setRoom] = useState([]);
+  const [loading, setLoading] = useState(true);
   const videoRef = useRef(null);
 
   const handlingPause = () => {
@@ -27,6 +29,19 @@ const Home = () => {
     }
     setVideoPlaying(!vidplaying)
   }
+
+  useEffect(() => {
+    fetch('http://localhost/HotelGestion/all.php')
+      .then(response => response.json())
+      .then(data => {
+        setRoom(data), setLoading(false)
+      })
+      .catch(error => { console.error('Error Fetching data', error), setLoading(false); })
+  }, [])
+  if (loading) {
+    return <Loading />;
+  }
+
 
   return (
     <>
@@ -63,6 +78,42 @@ const Home = () => {
             <img src={`./${img1}`} className='w-[60%] md:w-[35%] rounded-2xl' alt="" />
             <img src={`./${img2}`} className='w-[60%] md:w-[35%] rounded-2xl' alt="" />
             <img src={`./${img3}`} className='w-[60%] md:w-[35%] rounded-2xl' alt="" />
+          </div>
+        </div>
+      </section>
+      <section className='w-full flex flex-col items-center justify-center'>
+        <div className='w-4/5 h-full flex flex-col justify-center'>
+          <h1 className='text-primary font-poppins font-medium md:w-[80%]'>About Our Service <FontAwesomeIcon className='text-primary' icon={faArrowRight} /> </h1>
+          <div className='w-full h-full md:gap-10 flex flex-wrap justify-center mt-2 gap-3'>
+            {rooms.map(room => (
+              <div key={room.id} className='w-80 h-[450px] bg-white rounded-2xl gap-2 flex flex-col p-5'>
+                <img src={`../src/assets/${room.mainImage}`} className='rounded-2xl' alt="" />
+                <h1 className='text-xl text-primary font-semibold font-poppins'>{room.Name}</h1>
+                <div className='flex w-full items-center h-[30%]'>
+                  <div className='w-full h-full flex flex-col pr-1 items-center'>
+                    <div className='w-full h-full flex items-center'>
+                      <FontAwesomeIcon icon={faWifi} className='text-primary' />
+                      <h1 className='font-poppins text-sm ml-2 text-primary font-bold'>{room.wifi ? 'Wifi Available' : 'Wifi Not Available'}</h1>
+                    </div>
+                    <div className='w-full h-full flex items-center '>
+                      <FontAwesomeIcon icon={faUser} className='text-primary' />
+                      <h1 className='font-poppins text-sm ml-2 text-primary font-bold'>{room.capacity}</h1>
+                    </div>
+                  </div>
+                  <div className='w-full h-full flex flex-col items-center'>
+                    <div className='w-full h-full flex items-center'>
+                      <FontAwesomeIcon icon={faWind} className='text-primary' />
+                      <h1 className='font-poppins text-sm ml-2 text-primary font-bold'>{room.air_conditionar ? 'Air Conditioner' : 'Wifi Not Available'}</h1>
+                    </div>
+                    <div className='w-full h-full flex items-center '>
+                      <FontAwesomeIcon icon={faExpand} className='text-primary' />
+                      <h1 className='font-poppins text-sm ml-2 text-primary font-bold'>{room.size} m3</h1>
+                    </div>
+                  </div>
+                </div>
+                <Button className={`w-full`}>Visit Room</Button>
+              </div>
+            ))}
           </div>
         </div>
       </section>
