@@ -31,7 +31,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    fetch('http://localhost/HotelGestion/all.php')
+    fetch('http://localhost/shop/backend/all.php')
       .then(response => response.json())
       .then(data => {
         setRoom(data), setLoading(false)
