@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react';
 import Navbar from '../components/navBar';
 import heroVideo from '../assets/hero-vid.mp4'
 import Button from '../components/button';
@@ -8,15 +8,27 @@ import Search from '../components/searchBar';
 import img1 from '../assets/room.jpg';
 import img2 from '../assets/room1.jpg';
 import img3 from '../assets/room2.jpg';
-import Loading from '../components/loading ';
+import person from '../assets/person.jpg'
+import Rating from '@mui/material/Rating';
+import Loading from '../components/loading '
 
 
 const Home = () => {
   const [play, setPlay] = useState(faPlayCircle);
   const [vidplaying, setVideoPlaying] = useState(true);
   const [rooms, setRoom] = useState([]);
+  const [ratings, setRatings] = useState([]);
   const [loading, setLoading] = useState(true);
   const videoRef = useRef(null);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setLoading(false);
+    };
+
+    loadData();
+  }, []);
 
   const handlingPause = () => {
     if (play === faPlayCircle && vidplaying) {
@@ -29,22 +41,39 @@ const Home = () => {
     }
     setVideoPlaying(!vidplaying)
   }
+  const apiRooms = "http://localhost/shop/backend/all.php";
+  const apiRatings = "http://localhost/shop/backend/ratings.php";
 
   useEffect(() => {
-    fetch('http://localhost/shop/backend/all.php')
-      .then(response => response.json())
-      .then(data => {
-        setRoom(data), setLoading(false)
-      })
-      .catch(error => { console.error('Error Fetching data', error), setLoading(false); })
-  }, [])
+    const fetchData = async () => {
+      try {
+        const [res1, res2] = await Promise.all([
+          fetch(apiRooms),
+          fetch(apiRatings),
+        ]);
+
+        const data1 = await res1.json();
+        const data2 = await res2.json();
+
+        setRoom(data1);
+        setRatings(data2);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   if (loading) {
     return <Loading />;
   }
-
-
+  
   return (
     <>
+      {loading ? <Loading /> : <Home />}
       <header className='w-full h-screen flex flex-col items-center justify-center'>
         <Navbar />
         <section className='w-full flex h-full items-center justify-center relative'>
@@ -83,7 +112,7 @@ const Home = () => {
       </section>
       <section className='w-full flex flex-col items-center justify-center'>
         <div className='w-4/5 h-full flex flex-col justify-center'>
-          <h1 className='text-primary font-poppins font-medium md:w-[80%]'>About Our Service <FontAwesomeIcon className='text-primary' icon={faArrowRight} /> </h1>
+          <h1 className='text-primary font-poppins font-medium md:w-[80%]'>Our Rooms <FontAwesomeIcon className='text-primary' icon={faArrowRight} /> </h1>
           <div className='w-full h-full md:gap-10 flex flex-wrap justify-center mt-2 gap-3'>
             {rooms.map(room => (
               <div key={room.id} className='w-80 h-[450px] bg-white rounded-2xl gap-2 flex flex-col p-5'>
@@ -114,7 +143,25 @@ const Home = () => {
                 <Button className={`w-full`}>Visit Room</Button>
               </div>
             ))}
+            <Button className={`w-72`}>See All Rooms</Button>
           </div>
+        </div>
+      </section>
+      <section className='w-full mt-5 md:mt-0 h-[100vh] flex flex-col items-center justify-center'>
+        <div className='w-[80%] md:p-5 h-2/6 flex justify-center flex-col'>
+          <h1 className='text-primary font-poppins font-medium md:w-[80%]'>What Our Clients Says About us <FontAwesomeIcon className='text-primary' icon={faArrowRight} /> </h1>
+        </div>
+        <div className='w-full h-full flex flex-wrap md:p-5 gap-10 items-center justify-center'>
+          {ratings.map(rating => (
+            <div key={rating.id} className='md:w-[700px] md:h-[300px] md:flex-row w-4/5 h-[60%]  bg-white flex flex-col p-4 gap-4 items-center rounded-2xl'>
+              <img src={rating.pic} className='rounded-full w-40 h-40' alt="img person" />
+              <div className='gap-5 flex md:p-5 flex-col items-center'>
+                <h1 className='text-2xl font-bold font-poppins text-primary'>{rating.name}</h1>
+                <p className='text-center md:text-start font-poppins text-sm'>{rating.description}</p>
+                <Rating name="half-rating-read" size='large' defaultValue={rating.stars} precision={rating.stars} readOnly />
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </>

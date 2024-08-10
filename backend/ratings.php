@@ -4,9 +4,8 @@ header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
-
-$query = "SELECT * FROM rooms";
-$stmt= $conn->query($query);
+$query = 'SELECT * FROM ratings';
+$stmt = $conn->query($query);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 echo json_encode($rows);
