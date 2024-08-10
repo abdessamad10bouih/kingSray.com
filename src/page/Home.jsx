@@ -8,9 +8,10 @@ import Search from '../components/searchBar';
 import img1 from '../assets/room.jpg';
 import img2 from '../assets/room1.jpg';
 import img3 from '../assets/room2.jpg';
-import person from '../assets/person.jpg'
+import person from '../assets/person.jpg';
 import Rating from '@mui/material/Rating';
-import Loading from '../components/loading '
+import Loading from '../components/loading ';
+import Footer from '../components/footer';
 
 
 const Home = () => {
@@ -20,15 +21,6 @@ const Home = () => {
   const [ratings, setRatings] = useState([]);
   const [loading, setLoading] = useState(true);
   const videoRef = useRef(null);
-
-  useEffect(() => {
-    const loadData = async () => {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setLoading(false);
-    };
-
-    loadData();
-  }, []);
 
   const handlingPause = () => {
     if (play === faPlayCircle && vidplaying) {
@@ -70,10 +62,9 @@ const Home = () => {
   if (loading) {
     return <Loading />;
   }
-  
+
   return (
     <>
-      {loading ? <Loading /> : <Home />}
       <header className='w-full h-screen flex flex-col items-center justify-center'>
         <Navbar />
         <section className='w-full flex h-full items-center justify-center relative'>
@@ -147,13 +138,25 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className='w-full mt-5 md:mt-0 h-[100vh] flex flex-col items-center justify-center'>
+      <section className='w-full mt-5 md:mt-0 h-[160vh] md:h-[60vh] flex flex-col items-center justify-center'>
         <div className='w-[80%] md:p-5 h-2/6 flex justify-center flex-col'>
           <h1 className='text-primary font-poppins font-medium md:w-[80%]'>What Our Clients Says About us <FontAwesomeIcon className='text-primary' icon={faArrowRight} /> </h1>
         </div>
-        <div className='w-full h-full flex flex-wrap md:p-5 gap-10 items-center justify-center'>
+        <div className='hidden w-full relative m-auto overflow-hidden md:w-[2000px] before:absolute before:left-0 before:top-0 before:z-[2] before:h-full before:w-[100px] before:content-[""] after:absolute after:right-0 after:top-0 after:z-[2] after:h-full after:w-[100px] after:-scale-x-100 after:bg-[linear-gradient(to_right,white_0%,rgba(255,255,255,0)_100%)] after:content-[""] md:flex-nowrap h-full md:flex flex-wrap md:p-5 gap-10 items-center justify-center '>  
+              {ratings.map(rating => (
+                <div key={rating.id} className=' animate-infinite-slider md:flex md:w-[calc(700px*10)] md:h-[300px] md:flex-row w-4/5 h-[60%]  bg-white flex flex-col p-4 gap-4 items-center rounded-2xl'>
+                  <img src={rating.pic} className='rounded-full w-40 h-40' alt="img person" />
+                  <div className='gap-5 flex md:p-5 flex-col items-center'>
+                    <h1 className='text-2xl font-bold font-poppins text-primary'>{rating.name}</h1>
+                    <p className='text-center md:text-start font-poppins text-sm'>{rating.description}</p>
+                    <Rating name="half-rating-read" size='large' defaultValue={rating.stars} precision={rating.stars} readOnly />
+                  </div>
+                </div>
+              ))}
+        </div>
+        <div className='md:hidden w-full h-full flex flex-col items-center justify-center gap-5'>
           {ratings.map(rating => (
-            <div key={rating.id} className='md:w-[700px] md:h-[300px] md:flex-row w-4/5 h-[60%]  bg-white flex flex-col p-4 gap-4 items-center rounded-2xl'>
+            <div key={rating.id} className='md:flex md:w-[calc(700px*10)] md:h-[300px] md:flex-row w-4/5 h-[60%]  bg-white flex flex-col p-4 gap-4 items-center rounded-2xl'>
               <img src={rating.pic} className='rounded-full w-40 h-40' alt="img person" />
               <div className='gap-5 flex md:p-5 flex-col items-center'>
                 <h1 className='text-2xl font-bold font-poppins text-primary'>{rating.name}</h1>
@@ -164,6 +167,7 @@ const Home = () => {
           ))}
         </div>
       </section>
+      <Footer></Footer>
     </>
   )
 }

@@ -12,15 +12,26 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily : {
-        poppins : ['poppins', 'sans-serif']
+      fontFamily: {
+        poppins: ['poppins', 'sans-serif']
       },
-      colors : {
+      animation: {
+        ["infinite-slider"]: "infiniteSlider 20s linear infinite",
+      },
+      keyframes: {
+        infiniteSlider: {
+          "0%": { transform: "translateX(0)" },
+          "100%": {
+            transform: "translateX(calc(-250px * 5))",
+          },
+        }
+      },
+      colors: {
         'primary': '#176B87',
         'secondary': '#86B6F6',
         'bg': '#EEF5FF'
       },
-      screens :{
+      screens: {
         'sm': '640px',
         'md': '768px',
         'lg': '1024px',
