@@ -13,12 +13,12 @@ const Navbar = () => {
             </ul>
             <div className='w-full md:absolute md:mt-12 flex h-full items-center justify-between p-5 md:flex md:justify-center md:items-center'>
                 <Link to='/'><img src={logo} alt="logo" className='w-32 md:w-44' /></Link>
-                <Link to='/signup' className='md:hidden font-poppins bg-primary w-32 flex justify-center items-center text-white rounded-xl h-[100%] cursor-pointer'>Sign In/Login</Link>
+                <Link to='/login' className='md:hidden font-poppins bg-primary w-32 flex justify-center items-center text-white rounded-xl h-[100%] cursor-pointer'>Sign In/Login</Link>
             </div>
             <ul className='hidden md:flex md:w-full md:h-full md:justify-evenly md:items-center gap-8 z-[100]'>
                 <li><Link to='/ratings' className='font-poppins font-medium cursor-pointer'>Ratings</Link></li>
                 <li><Link to='/contact' className='font-poppins font-medium cursor-pointer'>Contact us</Link></li>
-                <li><Link to='/signup' className='font-medium bg-primary w-32 flex justify-center items-center text-white rounded-xl h-12 cursor-pointer'>Sign In/Login</Link></li>
+                <li><Link to='/login' className='font-medium bg-primary w-32 flex justify-center items-center text-white rounded-xl h-12 cursor-pointer'>Sign In/Login</Link></li>
             </ul>
         </nav>
     );
