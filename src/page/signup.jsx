@@ -39,9 +39,7 @@ const Signup = () => {
     return (
         <>
             <header className='w-full h-screen flex flex-col justify-center items-center'>
-                {/* <div className='w-full z-[-10] h-full absolute top-0 right-0'>
-                    <img src={bgImg} alt="background" className='w-full h-full object-contain'></img>
-                </div> */}
+                
                 <Navbar />
                     <div className='md:w-[80%] w-full h-screen flex justify-center items-center'>
                         <div className='w-[80%] md:w-full md:gap-8 gap-4 h-[90%] flex justify-center items-center'>

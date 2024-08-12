@@ -24,7 +24,7 @@ const Navbar = () => {
                 </li>
             </ul>
             <div className='md:w-[40%] w-full h-full flex justify-center items-center'>
-                <Link className='w-4/5 h-[60%] bg-primary rounded-3xl flex justify-center items-center font-semibold font-poppins text-white '>Log In / Sign Up</Link>
+                <Link to='/login' className='w-4/5 h-[60%] bg-primary rounded-3xl flex justify-center items-center font-semibold font-poppins text-white '>Log In / Sign Up</Link>
             </div>
         </nav>
     );

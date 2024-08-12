@@ -20,8 +20,16 @@ const Registre = () => {
     const [numColor, setnumColor] = useState('bg-red-600');
     const [upperColor, setupperColor] = useState('bg-red-600');
     const [lowerColor, setlowerColor] = useState('bg-red-600');
+    const [loading, setLoading] = useState(true);
 
+    setInterval(() => {
+        setLoading(false);
+    }, 1000)
 
+    if (loading) {
+        return <Loading />;
+    }
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         if (confirmPassword != password) {
