@@ -1,0 +1,30 @@
+/* Custom styles for the toast container */
+.Toastify__toast-container {
+    width: 320px;
+    max-width: 100%;
+    padding: 8px;
+}
+
+.Toastify__toast {
+    border-radius: 10px;
+    padding: 16px;
+    background-color: #333;
+    color: #fff;
+}
+
+/* Custom styles for the progress bar */
+.Toastify__progress-bar {
+    background-color: #176B87;
+}
+
+.Toastify__close-button {
+    color: #fff;
+}
+
+.Toastify__toast--success {
+    background-color: #004f03;
+}
+
+.Toastify__toast--error {
+    background-color: #740800;
+}
