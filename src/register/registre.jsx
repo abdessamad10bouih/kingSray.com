@@ -30,15 +30,31 @@ const Registre = () => {
         return <Loading />;
     }
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (confirmPassword != password) {
+
+        if (confirmPassword !== password) {
             toast.error('Passwords do not match');
             return;
         }
 
-        console.log('Form Submitted');
-    }
+        const response = await fetch("http://localhost/shop/backend/login.php", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            toast.success('Registration successful');
+            window.location.href = `/otp.jsx?email=${email}`;
+        } else {
+            toast.error(data.error || 'An error occurred');
+        }
+    };
 
     const hatchingPass = () => {
         setText(!text)
@@ -95,10 +111,10 @@ const Registre = () => {
                     <div className="md:w-[60%] w-full h-screen md:h-full md:mt-14 flex justify-center items-center">
                         <div className="w-[80%] md:w-full md:gap-8 gap-4 h-[90%] flex justify-center items-center">
                             <div className="hidden md:w-full md:order-2 md:h-full md:flex md:justify-center md:items-center">
-                                <img src={man} className='w-52  mb-10' alt="man" />
+                                <img src={`./${man}`} className='w-52  mb-10' alt="man" />
                             </div>
-                            <form onSubmit={handleSubmit} className="w-full z-[100] flex flex-col gap-4 items-center justify-center">
-                                <img src={logo} className="md:hidden" alt="Logo" />
+                            <form onSubmit={handleSubmit} method='POST' className="w-full z-[100] flex flex-col gap-4 items-center justify-center">
+                                <img src={`./${logo}`} className="md:hidden" alt="Logo" />
                                 <div className="w-full h-16 rounded-2xl flex items-center gap-2 pl-4 bg-white">
                                     <FontAwesomeIcon icon={faUserCircle} className="text-xl text-primary" />
                                     <input
@@ -159,7 +175,7 @@ const Registre = () => {
                                     />
                                 </div>
                                 <div className="w-full h-16">
-                                    <button onClick={verifyEmail} className="w-full h-full bg-primary flex justify-center items-center rounded-2xl text-xl text-white font-poppins">
+                                    <button name='register' onClick={verifyEmail} className="w-full h-full bg-primary flex justify-center items-center rounded-2xl text-xl text-white font-poppins">
                                         Next Step
                                     </button>
                                     <ToastContainer />
