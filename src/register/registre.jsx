@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Navbar from '../components/navBar';
+import { useAuth } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faEye, faEyeSlash, faLock, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import man from '../assets/man.png';
@@ -7,10 +8,14 @@ import logo from '../assets/logo.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../css/toaster.css'
+import axios from 'axios';
 import Loading from '../components/loading ';
-import { Link } from 'react-router-dom';
+import Home from '../page/Home'
+import { useNavigate } from 'react-router-dom';
 
 const Registre = () => {
+    const { setUserAuthentified } = useAuth();
+    const navigate = useNavigate()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,21 +43,27 @@ const Registre = () => {
             return;
         }
 
-        const response = await fetch("http://localhost/shop/backend/login.php", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, email, password }),
-        });
+        const url = 'http://localhost/shop/backend/login.php';
+        const frData = new FormData();
+        frData.append('email', email);
+        frData.append('pass', password);
+        frData.append('username', username);
 
-        const data = await response.json();
+        try {
+            const response = await axios.post(url, frData);
+            const data = response.data;
 
-        if (data.success) {
-            toast.success('Registration successful');
-            window.location.href = `/otp.jsx?email=${email}`;
-        } else {
-            toast.error(data.error || 'An error occurred');
+            if (data.success) {
+                localStorage.setItem('userAuthentified', 'true');
+                localStorage.setItem('userData', JSON.stringify(data.user))
+                setUserAuthentified(true);
+                navigate(`/?username=${username}`);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.error('There was a network error!', error);
+            toast.error('Network Error: Please check your server and network settings.');
         }
     };
 
@@ -123,6 +134,7 @@ const Registre = () => {
                                         placeholder="Username"
                                         value={username}
                                         name="username"
+                                        id='username'
                                         onChange={(e) => setUsername(e.target.value)}
                                     />
                                 </div>
@@ -134,6 +146,7 @@ const Registre = () => {
                                         placeholder="Email"
                                         value={email}
                                         name="email"
+                                        id='email'
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
@@ -144,7 +157,8 @@ const Registre = () => {
                                         className="w-full h-full bg-white pl-2 rounded-2xl focus:outline-none font-poppins"
                                         placeholder="Password"
                                         value={password}
-                                        name="password"
+                                        name="pass"
+                                        id='pass'
                                         onChange={verifyPassword}
                                     />
                                     <FontAwesomeIcon onClick={hatchingPass} icon={showPassword} className="text-2xl cursor-pointer text-primary" />
@@ -170,12 +184,12 @@ const Registre = () => {
                                         className="w-full h-full bg-white pl-2 rounded-2xl focus:outline-none font-poppins"
                                         placeholder="Repeat Password"
                                         value={confirmPassword}
-                                        name="email"
+                                        name="confirmPassword"
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                     />
                                 </div>
                                 <div className="w-full h-16">
-                                    <button name='register' onClick={verifyEmail} className="w-full h-full bg-primary flex justify-center items-center rounded-2xl text-xl text-white font-poppins">
+                                    <button type='submit' name='register' onClick={verifyEmail} className="w-full h-full bg-primary flex justify-center items-center rounded-2xl text-xl text-white font-poppins">
                                         Next Step
                                     </button>
                                     <ToastContainer />
