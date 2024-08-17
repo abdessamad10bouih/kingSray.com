@@ -52,10 +52,9 @@ const Registre = () => {
         try {
             const response = await axios.post(url, frData);
             const data = response.data;
-
             if (data.success) {
                 localStorage.setItem('userAuthentified', 'true');
-                localStorage.setItem('userData', JSON.stringify(data.user))
+                localStorage.setItem('userData', JSON.stringify(data.user));
                 setUserAuthentified(true);
                 navigate(`/?username=${username}`);
             } else {
@@ -66,6 +65,7 @@ const Registre = () => {
             toast.error('Network Error: Please check your server and network settings.');
         }
     };
+
 
     const hatchingPass = () => {
         setText(!text)
