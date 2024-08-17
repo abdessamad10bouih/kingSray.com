@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
@@ -11,6 +12,13 @@ export const AuthProvider = ({ children }) => {
             setUserAuthentified(true);
         }
     }, []);
+
+    const logout = () => {
+        localStorage.removeItem('userAuthentified');
+        localStorage.removeItem('userData');
+        setUserAuthentified(false);
+        navigate('/login');
+    };
 
     return (
         <AuthContext.Provider value={{ userAuthentified, setUserAuthentified }}>

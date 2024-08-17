@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/navBar';
 import { useAuth } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,9 +48,15 @@ const Registre = () => {
         frData.append('email', email);
         frData.append('pass', password);
         frData.append('username', username);
-
+        console.log([...frData]);
+        console.log(url)
         try {
-            const response = await axios.post(url, frData);
+            const response = await axios.post(url, frData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
             const data = response.data;
             if (data.success) {
                 localStorage.setItem('userAuthentified', 'true');
@@ -62,9 +68,10 @@ const Registre = () => {
             }
         } catch (error) {
             console.error('There was a network error!', error);
-            toast.error('Network Error: Please check your server and network settings.');
+            toast.error('Network error, please try again later.');
         }
     };
+
 
 
     const hatchingPass = () => {
@@ -119,7 +126,7 @@ const Registre = () => {
             <>
                 <header className="w-full flex flex-col justify-center items-center">
                     <Navbar />
-                    <div className="md:w-[60%] w-full h-screen md:h-full md:mt-14 flex justify-center items-center">
+                    <div className="md:w-[60%] relative top-32 w-full h-screen md:h-full md:mt-14 flex justify-center items-center">
                         <div className="w-[80%] md:w-full md:gap-8 gap-4 h-[90%] flex justify-center items-center">
                             <div className="hidden md:w-full md:order-2 md:h-full md:flex md:justify-center md:items-center">
                                 <img src={`./${man}`} className='w-52  mb-10' alt="man" />
@@ -192,7 +199,7 @@ const Registre = () => {
                                     <button type='submit' name='register' onClick={verifyEmail} className="w-full h-full bg-primary flex justify-center items-center rounded-2xl text-xl text-white font-poppins">
                                         Next Step
                                     </button>
-                                    <ToastContainer />
+                                    <ToastContainer style={{zIndex: '10000'}} />
                                 </div>
                             </form>
                         </div>

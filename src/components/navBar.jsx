@@ -14,12 +14,19 @@ const shapeCircleStyles = { borderRadius: '50%' };
 
 
 const Navbar = () => {
-    const { userAuthentified } = useAuth();
+    const { userAuthentified, setUserAuthentified } = useAuth();
     const [menuVisble, setMenuVisible] = useState(false);
 
     const menuVisiblity = () => {
         setMenuVisible(!menuVisble);
     }
+
+    const handleLogout = () => {
+        localStorage.removeItem('userAuthentified');
+        localStorage.removeItem('userData');
+        setUserAuthentified(false);
+        navigate('/login');
+    };
 
     const menuVariants = {
         hidden: { opacity: 0, y: '-100px' },
@@ -80,13 +87,13 @@ const Navbar = () => {
                         />
                         <Link className='text-md font-poppins'>Settings</Link>
                     </motion.li>
-                    <motion.li variants={liVariants} className='gap-2 flex items-center border-primary h-14 w-full'>
+                    <motion.li variants={liVariants} className='gap-2 flex items-center border-primary h-14 w-full' onClick={handleLogout}>
                         <FontAwesomeIcon
                             icon={faRightFromBracket}
                             alt="User Profile"
                             className='w-6 h-6 rounded-full text-primary object-cover cursor-pointer'
                         />
-                        <Link className='text-md font-poppins'>Log Out</Link>
+                        <Link to='/' className='text-md font-poppins'>Log Out</Link>
                     </motion.li>
                 </motion.ul>
             </div>
