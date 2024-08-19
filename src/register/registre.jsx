@@ -62,7 +62,7 @@ const Registre = () => {
                 localStorage.setItem('userAuthentified', 'true');
                 localStorage.setItem('userData', JSON.stringify(data.user));
                 setUserAuthentified(true);
-                navigate(`/?username=${username}`);
+                window.location.href = '/'
             } else {
                 toast.error(data.message);
             }
@@ -199,7 +199,7 @@ const Registre = () => {
                                     <button type='submit' name='register' onClick={verifyEmail} className="w-full h-full bg-primary flex justify-center items-center rounded-2xl text-xl text-white font-poppins">
                                         Next Step
                                     </button>
-                                    <ToastContainer style={{zIndex: '10000'}} />
+                                    <ToastContainer />
                                 </div>
                             </form>
                         </div>

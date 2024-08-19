@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://kings-ray-com.vercel.app/signup");
+header("Access-Control-Allow-Origin: http://localhost:5173/login");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
@@ -13,7 +13,6 @@ $email = $_POST["email"];
 $pass = $_POST["pass"];
 $hatchedPass = password_hash($pass, PASSWORD_DEFAULT);
 
-// Check if the username is already in use
 $userNamestmt = $conn->prepare('SELECT * FROM users WHERE username = :username');
 $userNamestmt->bindParam(':username', $username);
 $userNamestmt->execute();
@@ -25,8 +24,6 @@ if ($userNameCount > 0) {
     echo json_encode($response);
     exit;
 }
-
-// Check if the email is already in use
 $userEmailstmt = $conn->prepare('SELECT * FROM users WHERE email = :email');
 $userEmailstmt->bindParam(':email', $email);
 $userEmailstmt->execute();
@@ -39,7 +36,6 @@ if ($userEmailCount > 0) {
     exit;
 }
 
-// If both are available, proceed to insert the new user
 $stmt = $conn->prepare("INSERT INTO users(username, email, pass) VALUES (:username, :email, :pass)");
 $stmt->bindParam(':username', $username);
 $stmt->bindParam(':email', $email);

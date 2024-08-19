@@ -26,6 +26,7 @@ const Navbar = () => {
         localStorage.removeItem('userData');
         setUserAuthentified(false);
         navigate('/login');
+        setMenuVisible(false)
     };
 
     const menuVariants = {
@@ -57,7 +58,7 @@ const Navbar = () => {
                     <Link to="/contact">Contact us</Link>
                 </li>
             </ul>
-            <div className={`w-64 rounded-2xl ${menuVisble ? 'flex' : 'hidden'} flex-col h-64 bg-white absolute z-[200] md:right-32 right-10 shadow-xl md:top-20 top-24 p-5`}>
+            <div className={`w-64 rounded-2xl ${menuVisble ? 'flex' : 'hidden'} border flex-col h-64 bg-white absolute z-[200] md:right-32 right-10 shadow-xl md:top-20 top-24 p-5`}>
                 <motion.ul
                     variants={menuVariants}
                     initial="hidden"
