@@ -20,6 +20,7 @@
 /* Custom styles for the progress bar */
 .Toastify__progress-bar {
     background-color: #176B87;
+    background-color: #176b8780;
     z-index: 100000;
 }
 

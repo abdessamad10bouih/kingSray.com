@@ -29,6 +29,7 @@ export default {
       colors: {
         'primary': '#176B87',
         'secondary': '#86B6F6',
+        'hover': '#176b8780',
         'bg': '#EEF5FF'
       },
       screens: {

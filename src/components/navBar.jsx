@@ -70,7 +70,7 @@ const Navbar = () => {
                             alt="User Profile"
                             className='w-6 h-6 rounded-full text-primary object-cover cursor-pointer'
                         />
-                        <Link className='text-md font-poppins'>Profile</Link>
+                        <Link to='/profile' className='text-md font-poppins'>Profile</Link>
                     </motion.li>
                     <motion.li variants={liVariants} className='border-b gap-2 flex items-center border-primary h-14 w-full'>
                         <FontAwesomeIcon

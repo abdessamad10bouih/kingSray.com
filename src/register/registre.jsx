@@ -26,6 +26,7 @@ const Registre = () => {
     const [upperColor, setupperColor] = useState('bg-red-600');
     const [lowerColor, setlowerColor] = useState('bg-red-600');
     const [loading, setLoading] = useState(true);
+    localStorage.setItem('username', username);
 
     setInterval(() => {
         setLoading(false);

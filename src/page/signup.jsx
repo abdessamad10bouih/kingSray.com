@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Navbar from '../components/navBar';
 import man from '../assets/man.png';
 import { useAuth } from '../context/AuthContext';
@@ -9,6 +9,7 @@ import logo from '../assets/logo.png';
 import Loading from '../components/loading ';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import Registre from '../register/registre';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -18,7 +19,7 @@ const Signup = () => {
     const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate()
+    const username = localStorage.getItem('username')
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -51,7 +52,7 @@ const Signup = () => {
                 localStorage.setItem('userAuthentified', 'true');
                 localStorage.setItem('userData', JSON.stringify(data.user));
                 setUserAuthentified(true);
-                window.location.href = `/?email=${email}`;
+                window.location.href = `/?username=${username}`;
             } else {
                 toast.error(data.message);
             }
