@@ -27,6 +27,7 @@ const Registre = () => {
     const [lowerColor, setlowerColor] = useState('bg-red-600');
     const [loading, setLoading] = useState(true);
     localStorage.setItem('username', username);
+    
 
     setInterval(() => {
         setLoading(false);
@@ -44,7 +45,7 @@ const Registre = () => {
             return;
         }
 
-        const url = 'http://localhost/shop/backend/login.php';
+        const url = 'http://localhost/shop/backend/signup.php';
         const frData = new FormData();
         frData.append('email', email);
         frData.append('pass', password);
@@ -62,8 +63,9 @@ const Registre = () => {
             if (data.success) {
                 localStorage.setItem('userAuthentified', 'true');
                 localStorage.setItem('userData', JSON.stringify(data.user));
+                localStorage.setItem('id', data.id)
                 setUserAuthentified(true);
-                window.location.href = '/'
+                window.location.href = `/?id=${data.id}`
             } else {
                 toast.error(data.message);
             }

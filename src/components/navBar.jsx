@@ -8,18 +8,19 @@ import { faBell, faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { faGear, faHouse, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import Badge from '@mui/material/Badge';
-
-const shapeStyles = { bgcolor: 'primary.main', width: 40, height: 40 };
-const shapeCircleStyles = { borderRadius: '50%' };
+import Registre from '../register/registre';
 
 
 const Navbar = () => {
     const { userAuthentified, setUserAuthentified } = useAuth();
     const [menuVisble, setMenuVisible] = useState(false);
+    const userId = localStorage.getItem('id')
 
     const menuVisiblity = () => {
         setMenuVisible(!menuVisble);
     }
+
+    
 
     const handleLogout = () => {
         localStorage.removeItem('userAuthentified');
@@ -70,7 +71,7 @@ const Navbar = () => {
                             alt="User Profile"
                             className='w-6 h-6 rounded-full text-primary object-cover cursor-pointer'
                         />
-                        <Link to='/profile' className='text-md font-poppins'>Profile</Link>
+                        <Link to={`/profile/${userId}`} className='text-md font-poppins'>Profile</Link>
                     </motion.li>
                     <motion.li variants={liVariants} className='border-b gap-2 flex items-center border-primary h-14 w-full'>
                         <FontAwesomeIcon

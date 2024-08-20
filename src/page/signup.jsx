@@ -9,8 +9,6 @@ import logo from '../assets/logo.png';
 import Loading from '../components/loading ';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import Registre from '../register/registre';
-import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
@@ -19,7 +17,6 @@ const Signup = () => {
     const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const username = localStorage.getItem('username')
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -36,7 +33,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
 
-        const url = 'http://localhost/shop/backend/signup.php';
+        const url = 'http://localhost/shop/backend/login.php';
         const frData = new FormData();
         frData.append('email', email);
         frData.append('pass', password);
@@ -51,8 +48,9 @@ const Signup = () => {
             if (data.success) {
                 localStorage.setItem('userAuthentified', 'true');
                 localStorage.setItem('userData', JSON.stringify(data.user));
+                localStorage.setItem('id', data.id)
                 setUserAuthentified(true);
-                window.location.href = `/?username=${username}`;
+                window.location.href = `/?id=${data.id}`
             } else {
                 toast.error(data.message);
             }

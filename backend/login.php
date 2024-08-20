@@ -1,52 +1,43 @@
 <?php
 header("Access-Control-Allow-Origin: http://localhost:5173/login");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, multipart/form-data");
 header("Access-Control-Allow-Credentials: true");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 require_once('./config.php');
 
 $response = array();
 
-$username = $_POST["username"];
-$email = $_POST["email"];
-$pass = $_POST["pass"];
-$hatchedPass = password_hash($pass, PASSWORD_DEFAULT);
+$email = $_POST['email'];
+$pass = $_POST['pass'];
 
-$userNamestmt = $conn->prepare('SELECT * FROM users WHERE username = :username');
-$userNamestmt->bindParam(':username', $username);
-$userNamestmt->execute();
-$userNameCount = $userNamestmt->rowCount();
-
-if ($userNameCount > 0) {
-    $response['success'] = false;
-    $response['message'] = 'Username already in use';
-    echo json_encode($response);
-    exit;
-}
-$userEmailstmt = $conn->prepare('SELECT * FROM users WHERE email = :email');
-$userEmailstmt->bindParam(':email', $email);
-$userEmailstmt->execute();
-$userEmailCount = $userEmailstmt->rowCount();
-
-if ($userEmailCount > 0) {
-    $response['success'] = false;
-    $response['message'] = 'Email already in use';
-    echo json_encode($response);
-    exit;
-}
-
-$stmt = $conn->prepare("INSERT INTO users(username, email, pass) VALUES (:username, :email, :pass)");
-$stmt->bindParam(':username', $username);
+$stmt = $conn->prepare('SELECT * FROM users WHERE email = :email');
 $stmt->bindParam(':email', $email);
-$stmt->bindParam(':pass', $hatchedPass);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($stmt->execute()) {
+if ($user === false) {
+    $response['success'] = false;
+    $response['message'] = 'User Not Found';
+    echo json_encode($response);
+    exit;
+}
+
+$hashedPass = $user['pass'];
+$userId = $user['id'];
+if (password_verify($pass, $hashedPass)) {
     $response['success'] = true;
-    $response['message'] = "Registration successful";
+    $response['message'] = 'Login Successful';
+    $response['id'] = $userId;
 } else {
     $response['success'] = false;
-    $response['message'] = "Registration error: " . implode(" ", $stmt->errorInfo());
+    $response['message'] = 'Incorrect Password';
 }
 
 echo json_encode($response);
+exit;
