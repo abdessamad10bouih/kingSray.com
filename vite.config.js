@@ -15,7 +15,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['axios'],
+      // Remove externalization of axios
     },
   },
 })
